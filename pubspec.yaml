@@ -1,0 +1,14 @@
+name: casio_fx991
+description: A scientific calculator like Casio fx-991
+version: 1.0.0
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  math_expressions: ^2.4.0
+
+flutter:
+  uses-material-design: true
