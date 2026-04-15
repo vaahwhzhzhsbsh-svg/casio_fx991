@@ -1,44 +1,31 @@
-import '../../../domain/entities/video_entity.dart';
+import 'package:flutter/foundation.dart';
 
-class VideoModel extends VideoEntity {
+enum ConversionStatus { initial, processing, completed, failed }
+
+class VideoModel {
+  final String id;
+  final String name;
+  final String inputPath;
+  final String? outputPath;
+  final String fileSize;
+  final String duration;
+  final ConversionStatus status;
+  final double progress;
+  final String? errorMessage;
+  final DateTime createdAt;
+
   VideoModel({
-    required String id,
-    required String name,
-    required String inputPath,
-    String? outputPath,
-    required int fileSize,
-    required Duration duration,
-    ConversionStatus status = ConversionStatus.pending,
-    double progress = 0.0,
-    String? errorMessage,
-    required DateTime createdAt,
-  }) : super(
-    id: id,
-    name: name,
-    inputPath: inputPath,
-    outputPath: outputPath,
-    fileSize: fileSize,
-    duration: duration,
-    status: status,
-    progress: progress,
-    errorMessage: errorMessage,
-    createdAt: createdAt,
-  );
-
-  factory VideoModel.fromJson(Map<String, dynamic> json) {
-    return VideoModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      inputPath: json['inputPath'] as String,
-      outputPath: json['outputPath'] as String?,
-      fileSize: json['fileSize'] as int,
-      duration: Duration(milliseconds: json['durationMs'] as int),
-      status: ConversionStatus.values[json['status'] as int? ?? 0],
-      progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
-      errorMessage: json['errorMessage'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-    );
-  }
+    required this.id,
+    required this.name,
+    required this.inputPath,
+    this.outputPath,
+    required this.fileSize,
+    required this.duration,
+    this.status = ConversionStatus.initial,
+    this.progress = 0.0,
+    this.errorMessage,
+    required this.createdAt,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -47,8 +34,8 @@ class VideoModel extends VideoEntity {
       'inputPath': inputPath,
       'outputPath': outputPath,
       'fileSize': fileSize,
-      'durationMs': duration.inMilliseconds,
-      'status': status.index,
+      'duration': duration,
+      'status': status.name,
       'progress': progress,
       'errorMessage': errorMessage,
       'createdAt': createdAt.toIso8601String(),
@@ -60,8 +47,8 @@ class VideoModel extends VideoEntity {
     String? name,
     String? inputPath,
     String? outputPath,
-    int? fileSize,
-    Duration? duration,
+    String? fileSize,
+    String? duration,
     ConversionStatus? status,
     double? progress,
     String? errorMessage,
