@@ -17,11 +17,16 @@ jobs:
         with:
           channel: 'stable'
           
+      - name: Fix Android Environment
+        run: |
+          cd android
+          echo "flutter.sdk=${{ env.FLUTTER_HOME }}" > local.properties
+          
       - name: Install Dependencies
         run: flutter pub get
         
       - name: Build APK (Debug)
-        run: flutter build apk --debug
+        run: flutter build apk --debug --target-platform android-arm,android-arm64
         
       - name: Upload APK
         uses: actions/upload-artifact@v4
